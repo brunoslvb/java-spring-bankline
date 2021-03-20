@@ -7,8 +7,9 @@ import java.util.List;
 import bankline.model.Lancamento;
 import bankline.model.PlanAccountType;
 
-public class LancamentoDto {
+public class LancamentoTransferenciaDto {
     private Integer id;
+    private String contaDestino;
     private Date data;
     private Double valor;
     private Integer conta;
@@ -16,8 +17,9 @@ public class LancamentoDto {
     private Integer planAccount;
     private PlanAccountType planAccountType;
 
-    public LancamentoDto(Lancamento lancamento, PlanAccountType planAccountTypes) {
+    public LancamentoTransferenciaDto(Lancamento lancamento, PlanAccountType planAccountTypes) {
         this.id = lancamento.getId();
+        this.contaDestino = lancamento.getAccountDestino();
         this.data = lancamento.getDate();
         this.valor = lancamento.getValor();
         this.conta = lancamento.getAccount().getId();
@@ -26,6 +28,14 @@ public class LancamentoDto {
         this.planAccountType = planAccountTypes;
     }
     
+    public String getContaDestino() {
+        return contaDestino;
+    }
+
+    public void setContaDestino(String contaDestino) {
+        this.contaDestino = contaDestino;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -68,12 +78,11 @@ public class LancamentoDto {
     public void setId(Integer id) {
         this.id = id;
     }
-    public static LancamentoDto converter(List<Lancamento> lancamentoD, List<PlanAccountType> planAccountTypes, int i) {
+    public static LancamentoTransferenciaDto converter(List<Lancamento> lancamentoD, List<PlanAccountType> planAccountTypes, int i) {
         //List<LancamentoDto> lancamentoDtos = new ArrayList<>();
         
-        LancamentoDto lancamentoDto = new LancamentoDto(lancamentoD.get(i), planAccountTypes.get(i));
+        LancamentoTransferenciaDto lancamentoTranferenciaDto = new LancamentoTransferenciaDto(lancamentoD.get(i), planAccountTypes.get(i));
 
-        return lancamentoDto;
+        return lancamentoTranferenciaDto;
     }
-    
 }

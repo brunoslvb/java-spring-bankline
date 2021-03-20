@@ -1,5 +1,7 @@
 package bankline.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -75,7 +77,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public void setUser(@RequestBody User user) {
+    public void setUser(@RequestBody @Valid User user) {
         String senhaBcrypt = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(senhaBcrypt);
         userRepository.save(user);

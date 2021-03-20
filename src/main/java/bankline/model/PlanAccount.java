@@ -6,42 +6,61 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import bankline.form.PlanAccountForm;
+
 @Entity
 public class PlanAccount {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    
+    private String descricao;
     
     @ManyToOne
     private User user;
     
-    private Boolean padrao;
     private PlanAccountType type;
+
+    public PlanAccount() {}
     
-    public String getNome() {
-        return nome;
+    public PlanAccount(PlanAccountForm pAccountForm, PlanAccountType planAccountType, User user2) {
+        this.descricao = pAccountForm.getDescricao();
+        this.type = planAccountType;
+        this.user = user2;
+        
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public PlanAccountType getType() {
         return type;
     }
+
     public void setType(PlanAccountType type) {
         this.type = type;
     }
-    public Boolean getPadrao() {
-        return padrao;
-    }
-    public void setPadrao(Boolean padrao) {
-        this.padrao = padrao;
-    }
+
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+
 }

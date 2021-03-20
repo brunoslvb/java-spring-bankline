@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +24,7 @@ public class User implements UserDetails {
 
 	@Id
 	@Column(nullable = false)
+	@NotNull @NotEmpty @Length(max = 11)
 	private String cpf;
 	
 	@Column(unique = true, nullable = false, length = 20)

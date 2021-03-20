@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import bankline.form.LancamentoForm;
+
 @Entity
 public class Lancamento{
     @Id
@@ -18,7 +20,20 @@ public class Lancamento{
     private Double valor;
     @ManyToOne
     private PlanAccount planAccount;
-    
+    @ManyToOne
+    private Account account;
+    private String accountDestino;
+
+    public Lancamento() {}
+
+    public Lancamento(LancamentoForm lancamentoForm, Account account, PlanAccount planAccount) {
+        this.descricao = lancamentoForm.getDescricao();
+        this.date = lancamentoForm.getData();
+        this.account = account;
+        this.valor = lancamentoForm.getValor();
+        this.planAccount = planAccount;
+        this.accountDestino = lancamentoForm.getContaDestino();
+    }
     public Date getDate() {
         return date;
     }
@@ -48,6 +63,18 @@ public class Lancamento{
     }
     public void setDate(Date date) {
         this.date = date;
+    }
+    public Account getAccount() {
+        return account;
+    }
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+    public String getAccountDestino() {
+        return accountDestino;
+    }
+    public void setAccountDestino(String accountDestino) {
+        this.accountDestino = accountDestino;
     }
 
 

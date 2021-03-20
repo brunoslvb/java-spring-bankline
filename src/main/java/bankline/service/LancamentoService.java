@@ -1,24 +1,48 @@
 package bankline.service;
 
-import bankline.dtos.LancamentoDto;
+import java.util.Optional;
+
+import bankline.form.LancamentoForm;
+import bankline.model.Account;
+import bankline.model.PlanAccount;
+import bankline.model.PlanAccountType;
+import bankline.repository.AccountRepository;
+import bankline.repository.PlanAccountRepository;
 
 public class LancamentoService {
-    public void gravar(LancamentoDto dto){
-        //Account account = null; //repository.buscarPeloId(dto.accountId);
+
+    public void gravar(LancamentoForm form, AccountRepository aRepository, PlanAccountRepository pRepository){
+        System.out.println(form.getConta());
+        Optional<Account> account = aRepository.findById(form.getConta());
+        Account realAccount = account.get();
+        Optional<PlanAccount> pAccount =  pRepository.findById(form.getPlanAccount());
 
         //somar o saldo ou diminuir o saldo
 
         //Double valor = dto.getValor;
 
         //PlanAccount pa = null; //dto.idPlanAccount;
-        /* 
-        if(pa.getType() == PlanAccountType.REVENUE) {
-            account.setBalance(account.getBalance() + valor);
-        } else if(pa.getType() == PlanAccountType.CHARGE) {
-            account.setBalance(account.getBalance() - valor);
-        }*/
+
+        System.out.println(pAccount.get().getType()); 
+        
+        if(pAccount.get().getType() == PlanAccountType.REVENUE) {
+            realAccount.setBalance(realAccount.getBalance() + form.getValor());
+        } else if(pAccount.get().getType() == PlanAccountType.CHARGE) {
+            realAccount.setBalance(realAccount.getBalance() - form.getValor());
+        }else if(pAccount.get().getType() == PlanAccountType.TRANSFER) {
+            System.out.println("acertou");
+            Account contaDestino = aRepository.findByNumber(form.getContaDestino());
+            realAccount.setBalance(realAccount.getBalance() - form.getValor());
+            contaDestino.setBalance(contaDestino.getBalance() + form.getValor());
+        }
+
+        System.out.println(realAccount.getBalance());
+        aRepository.save(realAccount);
 
         //transferencia entre users
         //buscar a outra conta credito do usuario
+        
+        
+
     }
 }
