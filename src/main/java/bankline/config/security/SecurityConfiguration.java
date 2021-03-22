@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/users").permitAll()
+        .antMatchers(HttpMethod.POST, "/user").permitAll()
         .antMatchers(HttpMethod.POST, "/login-user").permitAll()
         .antMatchers("/h2-console/**").permitAll()
         .anyRequest().authenticated()
@@ -57,6 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     //config estaticos
     @Override   
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+        .antMatchers("/swagger-ui.html", "/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
     }   
 
     

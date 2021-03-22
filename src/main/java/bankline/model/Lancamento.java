@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import bankline.form.LancamentoForm;
 
@@ -15,9 +17,16 @@ public class Lancamento{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    @NotNull @NotEmpty
     private String descricao;
+
+    @NotNull
     private Date date;
+    
+    @NotNull
     private Double valor;
+    
     @ManyToOne
     private PlanAccount planAccount;
     @ManyToOne

@@ -1,5 +1,7 @@
 package bankline.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import bankline.dtos.UserAccountsDto;
 import bankline.dtos.UserDto;
 import bankline.form.AccountForm;
 import bankline.form.LoginForm;
+import bankline.form.UserForm;
 import bankline.model.Account;
 import bankline.model.AccountType;
 import bankline.model.User;
 import bankline.repository.AccountRepository;
 import bankline.repository.UserRepository;
+import bankline.service.UserCpfValidation;
 
 @RestController
 public class UserController {
@@ -40,11 +44,6 @@ public class UserController {
     @Autowired
     private TokenServ tokenServ;
 	
-    @RequestMapping("/")
-    String home() {
-        return "Hello World Spring Boost!";
-    }
-
     @RequestMapping(value = "/login-user", method = RequestMethod.POST)
     public ResponseEntity<UserAccountsDto> login(@RequestBody LoginForm form) {
         UsernamePasswordAuthenticationToken dadosLogin = form.converter();
@@ -76,11 +75,30 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public void setUser(@RequestBody @Valid User user) {
-        String senhaBcrypt = new BCryptPasswordEncoder().encode(user.getPassword());
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public ResponseEntity<String> createUser(@RequestBody @Valid UserForm userForm) {
+
+        boolean isCpf = UserCpfValidation.isCPF(userForm.getCpf());
+
+        if(isCpf == false) {
+            return ResponseEntity.badRequest().body("CPF inválido");
+        }
+        
+        Optional<User> userCheck = userRepository.findById(userForm.getCpf());
+        
+        if (userCheck.isPresent() && userCheck.get().getCpf() == userForm.getCpf()) {
+            return ResponseEntity.badRequest().body("CPF já cadastrado");
+        } else if (userCheck.isPresent() && userCheck.get().getLogin() == userForm.getLogin()) {
+            return ResponseEntity.badRequest().body("Login já cadastrado");
+        }
+
+        String senhaBcrypt = new BCryptPasswordEncoder().encode(userForm.getPassword());
+
+        User user = userForm.converter(userForm);
         user.setPassword(senhaBcrypt);
+
         userRepository.save(user);
+
 
         AccountForm accountForm = new AccountForm();
         accountForm.setBalance(0.0);
@@ -99,6 +117,8 @@ public class UserController {
         Account account2 = accountForm.converter(userRepository, accountForm2.getNumber(), accountForm2.getType(), accountForm.getBalance(), accountForm.getUserCpf());
 
         accountRepository.save(account2);
+
+        return ResponseEntity.ok().build();
     }
 
 }

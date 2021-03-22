@@ -2,6 +2,8 @@ package bankline.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +33,7 @@ public class LancamentoController {
     private PlanAccountRepository pRepository;
 
     @PostMapping
-    private void  lancamento(@RequestBody LancamentoForm lancamentoForm){
+    private void  lancamento(@Valid @RequestBody LancamentoForm lancamentoForm){
         Optional<Account> account = aRepository.findById(lancamentoForm.getConta());
         Optional<PlanAccount> pAccount =  pRepository.findById(lancamentoForm.getPlanAccount());
 

@@ -11,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import bankline.form.UserForm;
 
 
 @Entity
@@ -24,7 +26,7 @@ public class User implements UserDetails {
 
 	@Id
 	@Column(nullable = false)
-	@NotNull @NotEmpty @Length(max = 11)
+	@NotNull @NotEmpty @Size(max = 11)
 	private String cpf;
 	
 	@Column(unique = true, nullable = false, length = 20)
@@ -38,6 +40,17 @@ public class User implements UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Perfil> perfis = new ArrayList<>();
+
+	public User() {
+
+	}
+	
+	public User(UserForm userForm) {
+		this.cpf = userForm.getCpf();
+		this.login = userForm.getLogin();
+		this.name = userForm.getName();
+		this.password = userForm.getPassword();
+	}
 	
 	public String getName() {
 		return name;
