@@ -84,6 +84,6 @@ Agora é que de fato vamos fazer os lançamentos.
 
 **E isso é tudo 🚀🚀🚀**
 
-Temos uma API segura e pronta para gerir os lançamentos de cada usuário cadastrado!
+Temos uma API segura e pronta para gerir os lançamentos de cada usuário cadastrado! caso queiram testar aqui está o link: https://banklinegama.herokuapp.com/swagger-ui.html#/
 
 ​																**Equipe RESTaNODE**
